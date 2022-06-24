@@ -1,5 +1,6 @@
 from unicodedata import decimal
 import pandas as pd
+from pyparsing import And
 
 # 0.1 Traces of the ID
 # You gain access to the office station's surveillance system and recover some video material of the coffee kitchen. 
@@ -59,10 +60,10 @@ print('Sum of ID of ppl has access to Mod5 = ', sum) #53905239
 # Solution code: the sum of the ID numbers of all people in question.
 sum = 0
 for i in range(len(df)):
-    hours, minutes = map(int, df['FirstLoginTime'][i].split(':'))1
-    if hours <= 7 and minutes < 14:
+    hours, minutes = map(int, df['FirstLoginTime'][i].split(':'))
+    if (hours == 7 and minutes < 14) or (hours < 7):
         sum = sum + df['ID'][i]
-print('Sum of ID of ppl had accessed before 7:14 = ', sum) #18824468
+print('Sum of ID of ppl had accessed before 7:14 = ', sum) #47594213
 
 
 # Find the thief
@@ -70,5 +71,5 @@ for i in range(len(df)):
     Access = df['AccessKey'][i]
     Access = f'{Access:08b}' # format string to 8 digit binary
     hours, minutes = map(int, df['FirstLoginTime'][i].split(':'))
-    if '814' in str(df['ID'][i]) and (hours <= 7 and minutes < 14) and '1' in Access[4]:
+    if '814' in str(df['ID'][i]) and ((hours == 7 and minutes < 14) or (hours < 7)) and '1' in Access[4]:
         print('The thief is: ',df['Username'][i])
