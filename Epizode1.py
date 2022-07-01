@@ -44,8 +44,9 @@ populationNameList = []
 populationIDList = []
 populationHomePlanetList = []
 populationBloodSampleList = []
+print(len(populationSplit)-1)
 for i in range(len(populationSplit)-1):
-    plist = populationSplit[i].replace(' ','').lstrip().split("\n")
+    plist = populationSplit[i].lstrip().split("\n")
     plist[3:15]=[''.join(plist[3:15])]
     populationList.append(plist)
     populationNameList.append(plist[0].split(":")[1])
@@ -59,4 +60,4 @@ populationDf = pd.DataFrame(
     'ID': populationIDList, 
     'HomePlanet': populationHomePlanetList, 
     'BloodSample': populationBloodSampleList})
-print(populationDf['BloodSample'][0])
+print(populationDf['BloodSample'][12731])
