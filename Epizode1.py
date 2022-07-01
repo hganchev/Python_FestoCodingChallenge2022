@@ -34,12 +34,14 @@
 #  Identify all blood samples (in the population register) that contain one or more pico-bots of generation 1.
 # Solution code: the sum of the IDs of all people in question.
 import pandas as pd
-## Procesing of data
+from sqlalchemy import false, true
+import re
+## Open file
 population = open('population.txt').read()
 populationSplit = population.split("\n\n")
-print(populationSplit[0])
+print(populationSplit[0]) 
 
-populationList = []
+## Procesing of data
 populationNameList = []
 populationIDList = []
 populationHomePlanetList = []
@@ -48,16 +50,49 @@ print(len(populationSplit)-1)
 for i in range(len(populationSplit)-1):
     plist = populationSplit[i].lstrip().split("\n")
     plist[3:15]=[''.join(plist[3:15])]
-    populationList.append(plist)
     populationNameList.append(plist[0].split(":")[1])
     populationIDList.append(plist[1].split(":")[1])
     populationHomePlanetList.append(plist[2].split(":")[1])
     populationBloodSampleList.append(plist[3].split(":")[1])
-# print(populationNameList)
+print(populationNameList[0]) 
+
 ## Make DataFrame
 populationDf = pd.DataFrame(
     {'Name': populationNameList, 
     'ID': populationIDList, 
     'HomePlanet': populationHomePlanetList, 
     'BloodSample': populationBloodSampleList})
-print(populationDf['BloodSample'][12731])
+print(populationDf['BloodSample'][12731]) 
+
+## Find pico in Blood Sample
+sum = 0
+sampleColumns = [str]
+for i in range(len(populationDf)):
+    sampleRows = str(populationDf['BloodSample'][i]).replace('  +--------+  |','').replace('|  +--------+','').split('|  |')
+    # if i == 0: print(populationDf['BloodSample'][i], sampleRows)
+    sampleColumns.clear()
+    for j in range(len(sampleRows[0])):
+        sample = ''
+        for k in range(len(sampleRows)):
+            sample = sample + sampleRows[k][j]
+        sampleColumns.append(sample)
+        # if j == 0: print(sampleColumns)
+    counted = false
+    for l in sampleRows:
+        if 'pico' == l:
+            sum = sum + int(populationDf['ID'][i])
+            counted = true
+            break
+        elif 'ocip' == l:
+            sum = sum + int(populationDf['ID'][i])
+            counted = true
+            break
+    if(not counted):
+        for m in sampleColumns:
+            if 'pico' == m:
+                sum = sum + int(populationDf['ID'][i])
+                break
+            elif 'ocip' == m:
+                sum = sum + int(populationDf['ID'][i])
+                break
+print('The sum of the IDs of all people with pico: ',sum) 
