@@ -33,9 +33,7 @@
 # The security guards have told you that Jelly Jones moved at super-human speed, a typical effect of injecting pico-bots of generation 1.
 #  Identify all blood samples (in the population register) that contain one or more pico-bots of generation 1.
 # Solution code: the sum of the IDs of all people in question.
-from typing import List
 import pandas as pd
-from sqlalchemy import values
 ## Procesing of data
 population = open('population.txt').read()
 populationSplit = population.split("\n\n")
