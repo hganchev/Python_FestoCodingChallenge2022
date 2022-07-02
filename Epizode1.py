@@ -33,6 +33,7 @@
 # The security guards have told you that Jelly Jones moved at super-human speed, a typical effect of injecting pico-bots of generation 1.
 #  Identify all blood samples (in the population register) that contain one or more pico-bots of generation 1.
 # Solution code: the sum of the IDs of all people in question.
+import collections
 import pandas as pd
 from sqlalchemy import false, true
 import re
@@ -46,7 +47,7 @@ populationNameList = []
 populationIDList = []
 populationHomePlanetList = []
 populationBloodSampleList = []
-print(len(populationSplit)-1)
+print(len(populationSplit))
 for i in range(len(populationSplit)-1):
     plist = populationSplit[i].lstrip().split("\n")
     plist[3:15]=[''.join(plist[3:15])]
@@ -65,8 +66,8 @@ populationDf = pd.DataFrame(
 print(populationDf['BloodSample'][12731]) 
 
 ## Find pico in Blood Sample
-sum = 0
 sampleColumns = [str]
+IDList = []
 for i in range(len(populationDf)):
     sampleRows = str(populationDf['BloodSample'][i]).replace('  +--------+  |','').replace('|  +--------+','').split('|  |')
     # if i == 0: print(populationDf['BloodSample'][i], sampleRows)
@@ -79,20 +80,26 @@ for i in range(len(populationDf)):
         # if j == 0: print(sampleColumns)
     counted = false
     for l in sampleRows:
-        if 'pico' == l:
-            sum = sum + int(populationDf['ID'][i])
+        if 'pico' in l:
+            IDList.append(int(populationDf['ID'][i]))
             counted = true
             break
-        elif 'ocip' == l:
-            sum = sum + int(populationDf['ID'][i])
+        elif 'ocip' in l:
+            IDList.append(int(populationDf['ID'][i]))
             counted = true
             break
     if(not counted):
         for m in sampleColumns:
-            if 'pico' == m:
-                sum = sum + int(populationDf['ID'][i])
+            if 'pico' in m:
+                IDList.append(int(populationDf['ID'][i]))
                 break
-            elif 'ocip' == m:
-                sum = sum + int(populationDf['ID'][i])
+            elif 'ocip' in m:
+                IDList.append(int(populationDf['ID'][i]))
                 break
+sum = 0
+for i in range(len(IDList)):
+    sum = sum + IDList[i]
 print('The sum of the IDs of all people with pico: ',sum) 
+
+## find duplicates
+print([item for item, count in collections.Counter(IDList).items() if count > 1])
