@@ -46,3 +46,8 @@ for i in range(len(sampleDf)):
             elif 'ocip' in m:
                 print(sampleDf['SampleNumber'][i])
                 break
+
+## test list filter
+namesList = ['Hristo', 'Ganchev', 'Hristo']
+namesList = namesList = list(filter(('Hristo').__ne__,namesList))
+print(namesList)
