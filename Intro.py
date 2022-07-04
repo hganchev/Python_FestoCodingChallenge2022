@@ -11,8 +11,8 @@ from pyparsing import And
 # To confirm you solved the puzzle correctly, compute the solution code and enter it in the box below.
 # Solution code: the sum of the ID numbers of all people in question.
 
-df = pd.read_csv('office_database.txt')
-df.columns = ["Username", "ID", "AccessKey", "FirstLoginTime"]
+df = pd.read_csv('office_database.txt', skiprows = 0,
+                 names = ['Username', 'ID', 'AccessKey', 'FirstLoginTime'])
 print(df)
 sum = 0
 for i in range(len(df)):
