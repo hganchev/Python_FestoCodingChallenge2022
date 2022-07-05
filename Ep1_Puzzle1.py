@@ -34,6 +34,7 @@
 #  Identify all blood samples (in the population register) that contain one or more pico-bots of generation 1.
 # Solution code: the sum of the IDs of all people in question.
 import collections
+import numpy as np
 import pandas as pd
 
 ## Open file
@@ -102,6 +103,12 @@ sum = 0
 for i in range(len(idList)):
     sum = sum + idList[i]
 print('The sum of the IDs of all people with pico: ',sum) 
+
+## Write pico list
+f = open('picoIDList.txt', mode='w')
+for id in idList:
+    f.writelines(str(id) + ',')
+f.close()
 
 ## find duplicates
 print([item for item, count in collections.Counter(idList).items() if count > 1])
